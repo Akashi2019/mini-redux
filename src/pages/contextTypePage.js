@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { ThemeContext } from './themeContext';
+import { ThemeContext } from './ThemeContext';
 
 export default class ContextTypePage extends Component {
-  static contextType = ThemeContext;
+  //static contextType = ThemeContext;
   render() {
     const { themeColor } = this.context;
     return (
@@ -12,3 +12,5 @@ export default class ContextTypePage extends Component {
     );
   }
 }
+
+ContextTypePage.contextType = ThemeContext;
