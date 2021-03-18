@@ -1,5 +1,6 @@
 import './App.css';
 import ContextPage from './pages/ContextPage';
+import CaculatorPage from './pages/CaculatorPage'
 
 function f1(arg) {
   return arg;
@@ -30,6 +31,7 @@ function App() {
   return (
     <div className="App">
       <ContextPage />
+      <CaculatorPage />
     </div>
   );
 }
