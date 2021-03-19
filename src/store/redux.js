@@ -1,7 +1,10 @@
-export function createStore(reducer) {
+export function createStore(reducer, enhancer) {
+  if (enhancer) {
+    return enhancer(createStore)(reducer);
+  }
   let currentState = undefined;
   let currentListeners = [];
-  function getStore() {
+  function getState() {
     return currentState;
   }
   function dispatch(action) {
@@ -12,11 +15,40 @@ export function createStore(reducer) {
     currentListeners.push(listener);
   }
 
-  dispatch({type: '@INIT/REDUX'})
+  dispatch({ type: '@INIT/REDUX' });
 
   return {
-    getStore,
+    getState,
     dispatch,
     subscribe
   };
+}
+
+export function applyMiddleware(...middlewares) {
+  return (createStore) => (...args) => {
+    const store = createStore(...args);
+    let dispatch = store.dispatch;
+    const middleApi = {
+      getState: store.getState,
+      dispatch: dispatch
+    };
+    const middlewaresChain = middlewares.map((middleware) =>
+      middleware(middleApi)
+    );
+    dispatch = compose(...middlewaresChain)(dispatch);
+    return {
+      ...store,
+      dispatch
+    };
+  };
+}
+
+export function compose(...fns) {
+  if (fns.length === 0) {
+    return (args) => args;
+  }
+  if (fns.length === 1) {
+    return fns[0];
+  }
+  return fns.reduce((a, b) => (...args) => a(b(...args)));
 }

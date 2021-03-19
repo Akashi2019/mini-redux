@@ -39,11 +39,9 @@ export default FormCreate(
       this.validate(() => {
         const { getFieldValue } = this.props;
         const num = getFieldValue('num');
-        store.dispatch((dispatch) => {
-          setTimeout(() => {
-            dispatch({ type: 'ADD', payload: num - 0 });
-          }, 1000);
-        });
+        setTimeout(() => {
+          store.dispatch({ type: 'ADD', payload: num - 0 });
+        }, 1000);
       });
     };
 
@@ -52,7 +50,7 @@ export default FormCreate(
       return (
         <div>
           <h3>CaculatorPage</h3>
-          <p>{store.getState().count}</p>
+          <p>{store.getState()}</p>
           {getFieldDecorator('num', { rules: [numRules] })(
             <input type="text" />
           )}
